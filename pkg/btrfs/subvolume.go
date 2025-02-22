@@ -35,7 +35,8 @@ func IsSubvolume(path string) (bool, error) {
 	if err != nil {
 		return false, err
 	}
-	return statfs.Type == BTRFS_SUPER_MAGIC, nil
+	// Cast to uint32 avoids compile error on arm: "constant 2435016766 overflows int32"
+	return uint32(statfs.Type) == BTRFS_SUPER_MAGIC, nil
 }
 
 // CreateSubvolume creates a subvolume at the given path.
